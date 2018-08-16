@@ -65,8 +65,26 @@ const webpackConfig = merge(baseWebpackConfig, {
     new HtmlWebpackPlugin({
       filename: process.env.NODE_ENV === 'testing'
         ? 'index.html'
-        : config.build.index,
+        : path.resolve(__dirname, '../dist/index.html'),
       template: 'index.html',
+      chunks: ['manifest', 'vendor', 'app'],
+      inject: true,
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true,
+        removeAttributeQuotes: true
+        // more options:
+        // https://github.com/kangax/html-minifier#options-quick-reference
+      },
+      // necessary to consistently work with multiple chunks via CommonsChunkPlugin
+      chunksSortMode: 'dependency'
+    }),
+    new HtmlWebpackPlugin({
+      filename: process.env.NODE_ENV === 'testing'
+        ? 'index.html'
+        : path.resolve(__dirname, '../dist/page.html'),
+      template: 'index.html',
+      chunks: ['manifest', 'vendor', 'page'],
       inject: true,
       minify: {
         removeComments: true,
